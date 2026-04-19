@@ -1,0 +1,67 @@
+# Pre-commit hooks for {{PROJECT_NAME}} — Next.js + TypeScript prototype
+#
+# These hooks run before every commit to catch problems early.
+# DSO plugin hooks (review gate, test gate) are wired in by `dso-setup.sh` at install time.
+#
+# Manual run: `pre-commit run --all-files`
+# Skip a hook (rare; needs justification): `SKIP=<hook-id> git commit ...`
+#
+# Note: `--no-verify` is blocked by the DSO review gate — use the documented escape valves
+# above, not flag bypasses.
+
+fail_fast: false
+
+repos:
+  # Generic file hygiene
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: check-yaml
+      - id: check-json
+        exclude: '^\.vscode/.*\.json$'  # VSCode settings allow trailing commas
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: ['--maxkb=500']
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        args: ['--markdown-linebreak-ext=md']
+      - id: mixed-line-ending
+        args: ['--fix=lf']
+
+  # Detect committed secrets
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+        exclude: 'package-lock\.json|.*\.snap$'
+
+  # Lint and format staged TS/JS/SCSS files
+  - repo: local
+    hooks:
+      - id: eslint
+        name: ESLint (staged JS/TS)
+        entry: npx eslint --max-warnings=0
+        language: system
+        files: '\.(js|jsx|ts|tsx)$'
+        pass_filenames: true
+
+      - id: prettier-check
+        name: Prettier format check (staged)
+        entry: npx prettier --check
+        language: system
+        files: '\.(js|jsx|ts|tsx|json|md|scss|css|yaml|yml)$'
+        pass_filenames: true
+
+      - id: typecheck
+        name: TypeScript type check
+        entry: npx tsc --noEmit
+        language: system
+        files: '\.(ts|tsx)$'
+        pass_filenames: false  # tsc must check the whole project
+
+# DSO plugin hooks installed by dso-setup.sh:
+#   - dso-review-gate (blocks commits without passing review when risk threshold is met)
+#   - dso-test-gate   (blocks commits when staged source files have failing or missing tests)
+#   - dso-ticket-gate (blocks commits when ticket health is broken)
+# Do not duplicate them here.

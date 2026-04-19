@@ -1,186 +1,69 @@
-## Overview
+# {{PROJECT_NAME}}
 
-- This is a [Next.js](https://nextjs.org/) React web application, written in [TypeScript](https://www.typescriptlang.org/).
-- [U.S. Web Design System](https://designsystem.digital.gov) provides themeable styling and a set of common components.
-- [React-USWDS](https://github.com/trussworks/react-uswds) provides React components already with USWDS theming out of the box. For a reference point starting out, see `react-uswds-hello.tsx` which includes examples of react-uswds component usage.
-- [Storybook](https://storybook.js.org/) is included as a frontend workshop.
+A Next.js + TypeScript prototype scaffolded from the [Digital Service Orchestra (DSO) NextJS template](https://github.com/navapbc/digital-service-orchestra-nextjs-template).
 
-### Directory structure
+## Quick start
 
-```
-├── .storybook        # Storybook configuration
-├── public            # Static assets
-├── src               # Source code
-│   ├── app           # Routes, layouts, and loading screens
-│   │   ├── api       # Custom request handlers
-│   │   ├── layout.tsx # Root layout, wraps every page
-│   │   └── page.tsx  # Homepage
-|   ├── adapters      # External service adapters
-│   ├── components    # Reusable UI components
-│   ├── i18n          # Internationalization
-│   │   ├── config.ts  # Supported locales, timezone, and formatters
-│   │   └── messages  # Translated strings
-│   ├── styles        # Sass & design system settings
-│   └── types         # TypeScript type declarations
-├── stories           # Storybook pages
-└── tests             # Test setup and helpers
+```bash
+npm install
+npm run dev
 ```
 
-## 💻 Development
+Then open <http://localhost:3000>.
 
-[Next.js](https://nextjs.org/docs) provides the React framework for building the web application. Routes are defined in the `app/` directory. Pages are automatically routed based on the directory name. For example, `app/[locale]/about/page.tsx` would render at `/about` (for English) or `/es-US/about` (for Spanish).
+## Working with this project in Claude Code
 
-[**Learn more about developing Next.js applications** ↗️](https://nextjs.org/docs)
+This project is wired to the **DSO Claude Code plugin**, which provides skills for product roadmapping, epic decomposition, story planning, and TDD-based execution.
 
-### Getting started
-
-The application can be ran natively or in a Docker container.
-
-#### Native
-
-From the `{{PROJECT_NAME}}/` directory:
-
-1. Install dependencies
-   ```bash
-   npm install
-   ```
-1. Optionally, disable [telemetry data collection](https://nextjs.org/telemetry)
-   ```bash
-   npx next telemetry disable
-   ```
-1. Run the local development server
-   ```bash
-   npm run dev
-   ```
-1. Navigate to [localhost:3000](http://localhost:3000) to view the application
-
-##### Other scripts
-
-- `npm run build` - Builds the production Next.js bundle
-- `npm start` - Runs the Next.js server, after building the production bundle
-
-#### Docker
-
-Alternatively, you can run the application in a Docker container.
-
-From the `{{PROJECT_NAME}}/` directory:
-
-1. (Optional) If your machine doesn't include Node, and you'd like tools like VS Code to provide intellisense & type checking, run the following command to install the packages locally:
-   ```bash
-   make container-npm-install
-   ```
-1. Run the local development server
-   ```bash
-   make dev
-   ```
-1. Navigate to [localhost:3000](http://localhost:3000) to view the application
-
-##### Other scripts
-
-- `make release-build` - Creates the Docker image for deployment to the cloud
-
-## 🖼️ Storybook
-
-Storybook is a [frontend workshop](https://bradfrost.com/blog/post/a-frontend-workshop-environment/) for developing and documenting pages and components in isolation. It allows you to render the same React components and files in the `src/` directory in a browser, without the need for a server or database. This allows you to develop and manually test components without having to run the entire Next.js application.
-
-See the [Storybook Next.js documentation](https://github.com/storybookjs/storybook/tree/next/code/frameworks/nextjs) for more information about using Storybook with Next.js
-
-Similar to the Next.js application, Storybook can be ran natively or in a Docker container.
-
-#### Native
-
-From the `{{PROJECT_NAME}}/` directory:
-
-1. `npm run storybook`
-2. Navigate to [localhost:6006](http://localhost:6006) to view
-
-##### Other scripts
-
-- `npm run storybook-build` - Exports a static site to `storybook-static/`
-
-#### Docker
-
-Alternatively, you can run Storybook in a Docker container.
-
-From the `{{PROJECT_NAME}}/` directory:
-
-1. `make storybook`
-2. Navigate to [localhost:6006](http://localhost:6006) to view
-
-## 🐛 Testing
-
-[Jest](https://jestjs.io/docs/getting-started) is used as the test runner. Tests are managed as `.test.ts` (or `.test.tsx`) files and are colocated with the files they reference (for unit tests).
-
-To run tests:
-
-- `npm test` - Runs all tests and outputs test coverage report
-- `npm run test-update` - Updates test snapshots
-- `npm run test-watch` - Runs tests in [watch](https://jestjs.io/docs/cli#--watch) mode. Tests will re-run when files are changed, and an interactive prompt will allow you to run specific tests or update snapshots.
-
-A subset of tests can be ran by passing a pattern to the script. For example, to only run tests in `src/components`:
-
-```sh
-npm run test-watch -- src/components
+```bash
+claude        # launches Claude Code in this directory
 ```
 
-### Testing React components
+Inside Claude Code, the first command to try:
 
-[React Testing Library (RTL)](https://testing-library.com/docs/react-testing-library/intro) provides the utilities for rendering and querying, and [`jest-axe`](https://www.npmjs.com/package/jest-axe) is used for accessibility testing. Refer to their docs to learn more about their APIs, or view an existing test for examples.
-
-`@testing-library/react` methods should be imported from `tests/react-utils` in order for internationalization to work within your tests:
-
-```diff
-- import { render, screen } from '@testing-library/react';
-+ import { render, screen } from 'tests/react-utils';
-
-it("renders submit button", () => {
-  render(<Page />)
-
-  expect(
-    screen.getByRole("button", { name: "Submit" })
-  ).toBeInTheDocument()
-})
+```
+/dso:roadmap
 ```
 
-## 🤖 Type checking, linting, and formatting
+It walks you from "I have an idea" to a prioritized backlog of epics. From there, `/dso:sprint <epic-id>` executes an epic end-to-end with safety gates.
 
-- [TypeScript](https://www.typescriptlang.org/) is used for type checking.
-  - `npm run ts:check` - Type checks all files
-  - `npm run i18n-types` - Updates the i18n TypeScript declaration. You only need to run this if you've added a new English locale file (JSON files in `public/locales/en-US`). This runs automatically when you start the development server or build the application.
-- [ESLint](https://eslint.org/) is used for linting. This helps catch common mistakes and encourage best practices.
-  - `npm run lint` - Lints all files and reports any errors
-  - `npm run lint-fix` - Lints all files and fixes any auto-fixable errors
-- [Prettier](https://prettier.io/) is used for code formatting. This reduces the need for manual formatting or nitpicking and enforces a consistent style.
-  - `npm run format`: Formats all files
-  - `npm run format-check`: Check files for formatting violations without fixing them.
+See [CLAUDE.md](CLAUDE.md) for the full DSO command reference and project conventions.
 
-Optionally, configure your code editor to auto run these tools on file save. Most code editors have plugins for these tools or provide native support.
+## Stack
 
-<details>
-  <summary>VSCode instructions</summary>
+- **Framework**: [Next.js](https://nextjs.org/) (App Router) + [TypeScript](https://www.typescriptlang.org/)
+- **UI**: [USWDS](https://designsystem.digital.gov) via [`react-uswds`](https://github.com/trussworks/react-uswds)
+- **Styling**: SCSS with USWDS theming
+- **Testing**: [Jest](https://jestjs.io/) + [React Testing Library](https://testing-library.com/), [Storybook](https://storybook.js.org/) for components
+- **i18n**: [next-intl](https://next-intl-docs.vercel.app/)
 
-1. Install the [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) and [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) extensions.
-2. Add the following to a `.vscode/settings.json` file, in whichever directory you open in VSCode (root or this directory):
+## Available scripts
 
-   ```json
-   {
-     "editor.codeActionsOnSave": {
-       "source.fixAll.eslint": true
-     },
-     "editor.formatOnSave": true,
-     "editor.defaultFormatter": "esbenp.prettier-vscode",
-     "eslint.workingDirectories": ["./{{PROJECT_NAME}}"],
-     "typescript.validate.enable": true
-   }
-   ```
+| Command | What it does |
+|---------|--------------|
+| `npm run dev` | Start the development server on port 3000 |
+| `npm run build` | Build the production bundle |
+| `npm run start` | Run the production bundle |
+| `npm test` | Run unit tests with Jest |
+| `npm run lint` | Run ESLint |
+| `npm run format` | Format with Prettier |
+| `npm run format:check` | Check formatting without writing |
+| `npm run storybook` | Launch Storybook on port 6006 |
 
-[Learn more about these settings](https://code.visualstudio.com/docs/getstarted/settings)
+## Project documentation
 
-</details>
+- [CLAUDE.md](CLAUDE.md) — Claude Code project configuration and DSO command reference.
+- [project-understanding.md](project-understanding.md) — what this project is, who it serves, what success looks like. **Edit as the project evolves.**
+- [design-notes.md](design-notes.md) — design decisions and design-system conventions.
+- [.claude/ARCH_ENFORCEMENT.md](.claude/ARCH_ENFORCEMENT.md) — architectural invariants the DSO review skills enforce.
+- [docs/](docs/) — Architecture Decision Records and operational docs.
 
-## Other topics
+## Provenance and license
 
-- [Internationalization](../docs/{{PROJECT_NAME}}/internationalization.md)
-- [Security](../docs/{{PROJECT_NAME}}/security.md)
-- [Image optimization](../docs/{{PROJECT_NAME}}/image-optimization.md)
-- Refer to the [architecture decision records](../docs/decisions) for more context on technical decisions.
+This project was scaffolded from the [DSO NextJS template](https://github.com/navapbc/digital-service-orchestra-nextjs-template), which is itself derived from [`navapbc/template-application-nextjs`](https://github.com/navapbc/template-application-nextjs).
+
+Both the template and this scaffolded project are released under the [Apache License 2.0](LICENSE). Attribution to the upstream template is preserved in [NOTICE](NOTICE).
+
+## Security
+
+See [SECURITY.md](SECURITY.md) for vulnerability reporting.
