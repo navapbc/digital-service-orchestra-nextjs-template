@@ -1,73 +1,186 @@
-<p>
-  <img src="template-only-docs/assets/Nava-Strata-Logo-V02.svg" alt="Nava Strata" width="400">
-</p>
-<p><i>Open source tools for every layer of government service delivery.</i></p>
-<p><b>Strata is a gold-standard target architecture and suite of open-source tools that gives government agencies everything they need to run a modern service.</b></p>
+## Overview
 
-<h4 align="center">
-  <a href="https://github.com/navapbc/template-application-nextjs/blob/main/LICENSE">
-    <img src="https://img.shields.io/badge/license-apache_2.0-red" alt="Nava Strata is released under the Apache 2.0 license" >
-  </a>
-  <a href="https://github.com/navapbc/template-application-nextjs/blob/main/CONTRIBUTING.md">
-    <img src="https://img.shields.io/badge/PRs-Welcome-brightgreen" alt="PRs welcome!" />
-  </a>
-  <a href="https://github.com/navapbc/template-application-nextjs/issues">
-    <img src="https://img.shields.io/github/commit-activity/m/navapbc/template-application-nextjs" alt="git commit activity" />
-  </a>
-  <a href="https://github.com/navapbc/template-application-nextjs/repos/">
-    <img alt="GitHub Downloads (all assets, all releases)" src="https://img.shields.io/github/downloads/navapbc/template-application-nextjs/total">
-  </a>
-</h4>
+- This is a [Next.js](https://nextjs.org/) React web application, written in [TypeScript](https://www.typescriptlang.org/).
+- [U.S. Web Design System](https://designsystem.digital.gov) provides themeable styling and a set of common components.
+- [React-USWDS](https://github.com/trussworks/react-uswds) provides React components already with USWDS theming out of the box. For a reference point starting out, see `react-uswds-hello.tsx` which includes examples of react-uswds component usage.
+- [Storybook](https://storybook.js.org/) is included as a frontend workshop.
 
-# Template Next.js React application
+### Directory structure
 
-This is a template repository for a React web application using the Next.js framework.
-
-See [`navapbc/strata`](https://github.com/navapbc/strata) for other template repos.
-
-## Features
-
-- Framework for server-side rendered, static, or hybrid React applications
-- TypeScript and React testing tools
-- U.S. Web Design System for themeable styling and a set of common components
-- Type checking, linting, and code formatting tools
-- Storybook for a frontend workshop environment
-
-## Repo structure
-
-```text
-.
-├── template           # The template (the things that get installed/updated)
-│   ├── .github        # GitHub workflows
-│   ├── docs           # Project docs and decision records
-│   └── {{app_name}}   # Application code
-├── template-only-bin  # Template repo scripts
-└── template-only-docs # Template repo docs
+```
+├── .storybook        # Storybook configuration
+├── public            # Static assets
+├── src               # Source code
+│   ├── app           # Routes, layouts, and loading screens
+│   │   ├── api       # Custom request handlers
+│   │   ├── layout.tsx # Root layout, wraps every page
+│   │   └── page.tsx  # Homepage
+|   ├── adapters      # External service adapters
+│   ├── components    # Reusable UI components
+│   ├── i18n          # Internationalization
+│   │   ├── config.ts  # Supported locales, timezone, and formatters
+│   │   └── messages  # Translated strings
+│   ├── styles        # Sass & design system settings
+│   └── types         # TypeScript type declarations
+├── stories           # Storybook pages
+└── tests             # Test setup and helpers
 ```
 
-## Installation
+## 💻 Development
 
-To get started using the template application on your project:
+[Next.js](https://nextjs.org/docs) provides the React framework for building the web application. Routes are defined in the `app/` directory. Pages are automatically routed based on the directory name. For example, `app/[locale]/about/page.tsx` would render at `/about` (for English) or `/es-US/about` (for Spanish).
 
-1. [Install the nava-platform tool](https://github.com/navapbc/platform-cli).
-2. Install template by running in your project's root:
-    ```sh
-    nava-platform app install --template-uri https://github.com/navapbc/template-application-nextjs . <APP_NAME>
-    ```
-3. Follow the steps in `/<APP_NAME>/README.md` to set up the application locally.
-4. Optional, if using the Platform infra template: [Follow the steps in the `template-infra` README](https://github.com/navapbc/template-infra#installation) to set up the various pieces of your infrastructure.
+[**Learn more about developing Next.js applications** ↗️](https://nextjs.org/docs)
 
-## Learn more
+### Getting started
 
-- [Dependency management](./template-only-docs/set-up-dependency-management.md)
-- [Deployment](./template-only-docs/set-up-cd.md)
+The application can be ran natively or in a Docker container.
 
-## License
+#### Native
 
-This project is licensed under the Apache 2.0 License. See the [LICENSE](LICENSE) file for details.
+From the `{{PROJECT_NAME}}/` directory:
 
-## Community
+1. Install dependencies
+   ```bash
+   npm install
+   ```
+1. Optionally, disable [telemetry data collection](https://nextjs.org/telemetry)
+   ```bash
+   npx next telemetry disable
+   ```
+1. Run the local development server
+   ```bash
+   npm run dev
+   ```
+1. Navigate to [localhost:3000](http://localhost:3000) to view the application
 
-- [Code of Conduct](CODE_OF_CONDUCT.md)
-- [Contributing Guidelines](CONTRIBUTING.md)
-- [Security Policy](SECURITY.md)
+##### Other scripts
+
+- `npm run build` - Builds the production Next.js bundle
+- `npm start` - Runs the Next.js server, after building the production bundle
+
+#### Docker
+
+Alternatively, you can run the application in a Docker container.
+
+From the `{{PROJECT_NAME}}/` directory:
+
+1. (Optional) If your machine doesn't include Node, and you'd like tools like VS Code to provide intellisense & type checking, run the following command to install the packages locally:
+   ```bash
+   make container-npm-install
+   ```
+1. Run the local development server
+   ```bash
+   make dev
+   ```
+1. Navigate to [localhost:3000](http://localhost:3000) to view the application
+
+##### Other scripts
+
+- `make release-build` - Creates the Docker image for deployment to the cloud
+
+## 🖼️ Storybook
+
+Storybook is a [frontend workshop](https://bradfrost.com/blog/post/a-frontend-workshop-environment/) for developing and documenting pages and components in isolation. It allows you to render the same React components and files in the `src/` directory in a browser, without the need for a server or database. This allows you to develop and manually test components without having to run the entire Next.js application.
+
+See the [Storybook Next.js documentation](https://github.com/storybookjs/storybook/tree/next/code/frameworks/nextjs) for more information about using Storybook with Next.js
+
+Similar to the Next.js application, Storybook can be ran natively or in a Docker container.
+
+#### Native
+
+From the `{{PROJECT_NAME}}/` directory:
+
+1. `npm run storybook`
+2. Navigate to [localhost:6006](http://localhost:6006) to view
+
+##### Other scripts
+
+- `npm run storybook-build` - Exports a static site to `storybook-static/`
+
+#### Docker
+
+Alternatively, you can run Storybook in a Docker container.
+
+From the `{{PROJECT_NAME}}/` directory:
+
+1. `make storybook`
+2. Navigate to [localhost:6006](http://localhost:6006) to view
+
+## 🐛 Testing
+
+[Jest](https://jestjs.io/docs/getting-started) is used as the test runner. Tests are managed as `.test.ts` (or `.test.tsx`) files and are colocated with the files they reference (for unit tests).
+
+To run tests:
+
+- `npm test` - Runs all tests and outputs test coverage report
+- `npm run test-update` - Updates test snapshots
+- `npm run test-watch` - Runs tests in [watch](https://jestjs.io/docs/cli#--watch) mode. Tests will re-run when files are changed, and an interactive prompt will allow you to run specific tests or update snapshots.
+
+A subset of tests can be ran by passing a pattern to the script. For example, to only run tests in `src/components`:
+
+```sh
+npm run test-watch -- src/components
+```
+
+### Testing React components
+
+[React Testing Library (RTL)](https://testing-library.com/docs/react-testing-library/intro) provides the utilities for rendering and querying, and [`jest-axe`](https://www.npmjs.com/package/jest-axe) is used for accessibility testing. Refer to their docs to learn more about their APIs, or view an existing test for examples.
+
+`@testing-library/react` methods should be imported from `tests/react-utils` in order for internationalization to work within your tests:
+
+```diff
+- import { render, screen } from '@testing-library/react';
++ import { render, screen } from 'tests/react-utils';
+
+it("renders submit button", () => {
+  render(<Page />)
+
+  expect(
+    screen.getByRole("button", { name: "Submit" })
+  ).toBeInTheDocument()
+})
+```
+
+## 🤖 Type checking, linting, and formatting
+
+- [TypeScript](https://www.typescriptlang.org/) is used for type checking.
+  - `npm run ts:check` - Type checks all files
+  - `npm run i18n-types` - Updates the i18n TypeScript declaration. You only need to run this if you've added a new English locale file (JSON files in `public/locales/en-US`). This runs automatically when you start the development server or build the application.
+- [ESLint](https://eslint.org/) is used for linting. This helps catch common mistakes and encourage best practices.
+  - `npm run lint` - Lints all files and reports any errors
+  - `npm run lint-fix` - Lints all files and fixes any auto-fixable errors
+- [Prettier](https://prettier.io/) is used for code formatting. This reduces the need for manual formatting or nitpicking and enforces a consistent style.
+  - `npm run format`: Formats all files
+  - `npm run format-check`: Check files for formatting violations without fixing them.
+
+Optionally, configure your code editor to auto run these tools on file save. Most code editors have plugins for these tools or provide native support.
+
+<details>
+  <summary>VSCode instructions</summary>
+
+1. Install the [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) and [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) extensions.
+2. Add the following to a `.vscode/settings.json` file, in whichever directory you open in VSCode (root or this directory):
+
+   ```json
+   {
+     "editor.codeActionsOnSave": {
+       "source.fixAll.eslint": true
+     },
+     "editor.formatOnSave": true,
+     "editor.defaultFormatter": "esbenp.prettier-vscode",
+     "eslint.workingDirectories": ["./{{PROJECT_NAME}}"],
+     "typescript.validate.enable": true
+   }
+   ```
+
+[Learn more about these settings](https://code.visualstudio.com/docs/getstarted/settings)
+
+</details>
+
+## Other topics
+
+- [Internationalization](../docs/{{PROJECT_NAME}}/internationalization.md)
+- [Security](../docs/{{PROJECT_NAME}}/security.md)
+- [Image optimization](../docs/{{PROJECT_NAME}}/image-optimization.md)
+- Refer to the [architecture decision records](../docs/decisions) for more context on technical decisions.
