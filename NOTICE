@@ -1,0 +1,81 @@
+Digital Service Orchestra (DSO) NextJS Template
+Copyright 2026 Nava Public Benefit Corporation and contributors
+
+This product is derived from the Next.js template application maintained
+by Nava Public Benefit Corporation:
+
+  navapbc/template-application-nextjs
+  https://github.com/navapbc/template-application-nextjs
+
+  Pinned upstream commit (date of derivation):
+    SHA:  a0ca4c91f3e1acb74d8801036b5c762fcb1c9615
+    Date: 2026-04-19
+
+This product is licensed under the Apache License, Version 2.0 (the
+"License"). You may not use this product except in compliance with the
+License. A copy of the License is provided in the LICENSE file
+distributed with this product, and may also be obtained at
+
+  https://www.apache.org/licenses/LICENSE-2.0
+
+================================================================================
+Modifications from the upstream template
+================================================================================
+
+The following modifications were made when deriving this template from the
+upstream commit listed above. They are summarised here per Section 4 of the
+Apache License, Version 2.0, which requires that modifications carry
+prominent notices stating that changes have been made.
+
+1. Copier render
+   The upstream repository is a Copier template (https://copier.readthedocs.io)
+   that requires the `nava-platform` CLI to render. The derivation rendered
+   the template once with a sentinel `app_name` placeholder and committed the
+   rendered output at the repository root, so that consumers can use the
+   template directly without installing copier or the nava-platform CLI.
+
+2. nava-platform machinery removal
+   The following nava-platform-specific files and directories were removed
+   from the upstream copy after rendering:
+     - copier.yml, code.json, .copier-answers.yml
+     - template/, template-only-bin/, template-only-docs/
+     - renovate.json (Nava-Renovate-specific config)
+     - CODEOWNERS (Nava-team-specific)
+     - SECURITY.md (replaced with a DSO-maintained version)
+     - CONTRIBUTING.md (replaced; DSO contribution flow lives in the DSO
+       plugin repo)
+     - .github/workflows/template-only-*.yml
+     - rendered nava-style CI workflows (replaced with a DSO ci.yml)
+
+3. {{PROJECT_NAME}} placeholders
+   String literals identifying the project (package.json `name`, README
+   title, in-repo path references) were replaced with the literal token
+   `{{PROJECT_NAME}}`. The `create-dso-app` installer in the
+   `digital-service-orchestra` plugin substitutes this token with the
+   user's sanitized project name at scaffold time.
+
+4. DSO infrastructure
+   The following pre-populated files were added to support the Digital
+   Service Orchestra (DSO) Claude Code plugin workflow:
+     - CLAUDE.md (Claude Code project configuration)
+     - project-understanding.md, design-notes.md
+     - .claude/ARCH_ENFORCEMENT.md, .claude/dso-config.conf
+     - .pre-commit-config.yaml (eslint/prettier/typecheck + DSO hook stubs)
+     - .github/workflows/ci.yml (DSO-tagged CI pipeline)
+     - SECURITY.md (DSO security contact)
+
+5. Tickets orphan branch
+   A `tickets` orphan branch with an empty initial commit was added so the
+   DSO ticket-tracker subsystem can populate it on first use inside a
+   scaffolded project.
+
+================================================================================
+Attribution
+================================================================================
+
+The upstream LICENSE file is preserved unmodified at the repository root.
+This NOTICE file is required reading for redistributors per Apache License
+Section 4(d). It must be retained in any derivative works in at least one
+of the locations enumerated in Section 4(d) of the License.
+
+For questions about this derivation, see https://github.com/navapbc/digital-service-orchestra
